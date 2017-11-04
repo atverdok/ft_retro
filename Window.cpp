@@ -13,7 +13,7 @@
 #include "Window.hpp"
 #include <string>
 
-Window::Window()
+Window::Window() : _player(vec2si(10, 10))
 {
 	_window = initscr();
 	cbreak();
@@ -47,16 +47,46 @@ Window & Window::operator=(Window const & rhs)
 
 void Window::gameProcess()
 {
-	move(30, 35);
 
-	std::string text = "Rush00";
+	bool exit_requested = false;
+	int in_char;
 
-	for (size_t i = 0; i < text.size(); ++i)
-	{
-		addch(text[i]);
-		addch(' ');
-	}
-	refresh();
-	while (true) ;
+    while(1) {
+        in_char = wgetch(_window);
+
+        mvaddch(_player.getY(), _player.getX(), ' ');
+
+        attron(A_BOLD);
+    	box(_window, 0, 0);
+    	attroff(A_BOLD);
+
+        mvprintw(0, (COLS / 2), " X=%d Y=%d ", _player.getX(), _player.getY() );
+        
+        switch(in_char) {
+        	case 27: exit_requested = true; break;
+            case 'w': _player.setY(_player.getY() - 1); break;
+            case 's': _player.setY(_player.getY() + 1); break;
+            case 'a': _player.setX(_player.getX() - 1); break;
+            case 'd': _player.setX(_player.getX() + 1); break;
+            default: break;
+        }
+
+        mvaddch(_player.getY(), _player.getX(), _player.getDispChar());
+
+        if(exit_requested) break;
+        usleep(10000); // 10 ms
+
+        refresh();
+    }
+
+	// std::string text = "Rush00";
+
+	// for (size_t i = 0; i < text.size(); ++i)
+	// {
+	// 	addch(text[i]);
+	// 	addch(' ');
+	// }
+	// refresh();
+	// while (true) ;
 }
 

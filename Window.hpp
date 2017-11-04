@@ -13,12 +13,15 @@
 #ifndef WINDOW_HPP
 # define WINDOW_HPP
 
+#include <unistd.h>
 #include <ncurses.h>
+#include "Player.hpp"
 
 class Window
 {
 	private:
 		WINDOW	*_window;
+		Player	_player;
 
 	private:
 		Window(Window const & src);
