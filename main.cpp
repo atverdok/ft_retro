@@ -10,11 +10,23 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <csignal>
 #include "Window.hpp"
+
+void		handlerResize(int sig)
+{
+	if ( sig == SIGWINCH)
+	{
+		endwin();
+	    refresh();
+	    clear();
+	}
+}
 
 int	main( void )
 {
 	Window	window;
+	signal(SIGWINCH, &handlerResize);
 	window.gameProcess();
 	return 0;
 }

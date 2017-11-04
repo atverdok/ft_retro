@@ -18,7 +18,7 @@ Player::Player() : Unit(0, 0, '>')
 	_maximumHP = 3;
 }
 
-Player::Player(int verticalPos) : Unit(0, verticalPos, '>')
+Player::Player(int verticalPos) : Unit(1, verticalPos, '>')
 {
 	_currentHP = 3;
 	_maximumHP = 3;

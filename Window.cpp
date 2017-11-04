@@ -51,7 +51,6 @@ Window & Window::operator=(Window const & rhs)
 	return *this;
 }
 
-
 void Window::gameProcess()
 {
 	bool	exit_requested = false;
@@ -59,6 +58,7 @@ void Window::gameProcess()
 
 	int count = 0;
     while(!exit_requested) {
+
         in_char = wgetch(_window);
 
         mvaddch(_player.getY(), _player.getX(), ' ');
@@ -93,12 +93,12 @@ void Window::gameProcess()
 				_enemies[i]->decrX();
 			}
 
-			if (_enemies[i]->getX() < 0)
+			if (_enemies[i]->getX() < 1)
 				_enemies[i]->setX(getmaxx(_window) + 10);
 			if (_player.getX() == _enemies[i]->getX() &&
 				_player.getY() == _enemies[i]->getY())
 			{
-				_enemies[i]->setX(60);
+				_enemies[i]->setX(getmaxx(_window) + 10 + (rand() % 40));
 				mvaddch(_enemies[i]->getY(), _enemies[i]->getX(), '+');
 
 			}
