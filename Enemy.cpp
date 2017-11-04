@@ -1,39 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Player.cpp                                         :+:      :+:    :+:   */
+/*   Enemy.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atverdok <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oshudria <oshudria@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/04 13:23:24 by atverdok          #+#    #+#             */
-/*   Updated: 2017/11/04 19:29:42 by oshudria         ###   ########.fr       */
+/*   Created: 2017/11/04 19:11:46 by oshudria          #+#    #+#             */
+/*   Updated: 2017/11/04 19:49:32 by oshudria         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Player.hpp"
+#include "Enemy.hpp"
 
-Player::Player() : Unit(0, 0, '>')
+Enemy::Enemy() : Unit(0, 0, '@')
 {
-	_currentHP = 3;
+	_currentHP = 1;
 	_maximumHP = 3;
 }
 
-Player::Player(int verticalPos) : Unit(0, verticalPos, '>')
+Enemy::Enemy(int x, int y) : Unit(x, y, '@')
 {
-	_currentHP = 3;
+	_currentHP = 1;
 	_maximumHP = 3;
 }
 
-Player::Player(Player const & src)
+Enemy::Enemy(Enemy const & src)
 {
 	*this = src;
 }
 
-Player::~Player()
+Enemy::~Enemy()
 {
 }
 
-Player & Player::operator=(Player const & rhs)
+Enemy & Enemy::operator=(Enemy const & rhs)
 {
 	if (this != &rhs)
 	{

@@ -1,29 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Player.hpp                                         :+:      :+:    :+:   */
+/*   Enemy.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atverdok <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oshudria <oshudria@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/04 13:18:59 by atverdok          #+#    #+#             */
-/*   Updated: 2017/11/04 19:32:10 by oshudria         ###   ########.fr       */
+/*   Created: 2017/11/04 19:08:02 by oshudria          #+#    #+#             */
+/*   Updated: 2017/11/04 19:48:47 by oshudria         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PLAYER_HPP
-# define PLAYER_HPP
+#ifndef ENEMY_HPP
+# define ENEMY_HPP
 
 #include "Unit.hpp"
 
-class Player : public Unit
+class Enemy : public Unit
 {
+	protected:
+		Enemy();
 	public:
-		Player();
-		Player(int verticalPos);
-		Player(Player const & src);
-		~Player();
+		Enemy(int x, int y);
+		Enemy(Enemy const & src);
+		~Enemy();
 
-		Player & operator=(Player const & hrs);
+		Enemy & operator=(Enemy const & hrs);
 };
 
-#endif
+#endif // ENEMY_HPP
