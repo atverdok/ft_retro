@@ -89,17 +89,8 @@ void	Window::gameProcess()
 			++count;
 		}
 		else
-		{
-			clear();
-    		box(_window, 0, 0);
 			break;
-		}
     }
-	while(userInput())
-   	{
-		printStat();
-		mvprintw((COLS / 3), (LINES / 2), "GAME OVER!!!");
-	}
 }
 
 void	Window::createEnemies()
@@ -216,4 +207,14 @@ void	Window::moveEnemy(int index, int count)
 	mvaddch(_enemies[index]->getY(),
 		   	_enemies[index]->getX(),
 		   	_enemies[index]->getView());		
+}
+
+int		Window::get_numDeadth()
+{
+	return _numDeadth;
+}
+
+int		Window::get_time()
+{
+	return _time;
 }

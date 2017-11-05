@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include <csignal>
+#include <iostream>
 #include "Window.hpp"
 
 void		handlerResize(int sig)
@@ -25,8 +26,12 @@ void		handlerResize(int sig)
 
 int	main( void )
 {
-	Window	window;
+	Window * window = new Window();
 	signal(SIGWINCH, &handlerResize);
-	window.gameProcess();
+	window->gameProcess();
+	delete window;
+	std::cout << std::endl << "GAME OVER!!!" << std::endl;
+	std::cout << "You survived " << (window->get_time() / 60) << " seconds and killed " << window->get_numDeadth() << " enemies!" << std::endl;
+	std::cout << std::endl;
 	return 0;
 }

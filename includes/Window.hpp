@@ -44,13 +44,15 @@ class Window
 		void	drawBullet();
 		void	killEnemy(int index);
 		void	moveEnemy(int index, int count);
+		void	_frameWait(void);
 
 	public:
 		Window();
 		~Window();
 
 		void	gameProcess();
-		void	_frameWait(void);
+		int		get_numDeadth();
+		int		get_time();
 };
 
 #endif // WINDOW_HPP
