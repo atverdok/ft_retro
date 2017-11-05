@@ -6,7 +6,7 @@
 /*   By: oshudria <oshudria@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/04 11:24:54 by oshudria          #+#    #+#             */
-/*   Updated: 2017/11/04 21:07:07 by oshudria         ###   ########.fr       */
+/*   Updated: 2017/11/05 17:31:38 by oshudria         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,9 @@ class Window
 		Window & operator=(Window const & rhs);
 
 		void	createEnemies();
+		bool	userInput();
+		void	printStat();
+		void	drawBullet();
 
 	public:
 		Window();

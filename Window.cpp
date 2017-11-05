@@ -6,7 +6,7 @@
 /*   By: oshudria <oshudria@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/04 11:30:14 by oshudria          #+#    #+#             */
-/*   Updated: 2017/11/05 12:18:17 by atverdok         ###   ########.fr       */
+/*   Updated: 2017/11/05 17:31:36 by oshudria         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,36 +51,20 @@ Window::Window(Window const & src)
 
 Window & Window::operator=(Window const & rhs)
 {
+	(void)rhs;
 	return *this;
 }
 
 void Window::gameProcess()
 {
-	bool	exit_requested = false;
-	int in_char;
-
 	int count = 0;
-    while(!exit_requested) {
-
-        in_char = wgetch(_window);
-
+	while(userInput()) // chek key codes
+	{
         mvaddch(_player.getY(), _player.getX(), ' ');
-
     	box(_window, 0, 0);
+		printStat();   // statistics on top of Window
+        mvaddch(_player.getY(), _player.getX(), _player.getView()); // draw player
 
-        mvprintw(0, (COLS / 2), "Current HP: %d | #%d of dead | Time: %d ", _player.getCHP(), _numDeadth, _time / 60 );
-        
-        switch(in_char) {
-        	case 27       :  exit_requested = true; break;
-            case KEY_UP   : _player.decrY(); break;
-            case KEY_DOWN : _player.incrY(); break;
-            case KEY_LEFT : _player.decrX(); break;
-            case KEY_RIGHT: _player.incrX(); break;
-            case ' '	  : _player.getWeapon().shut(_player.getX() + 1, _player.getY()); break;
-            default: break;
-        }
-	
-        mvaddch(_player.getY(), _player.getX(), _player.getView());
 
 		for (int i = 0; i < _maxBull; i++)
 		{
@@ -144,7 +128,6 @@ void Window::gameProcess()
 		}
 
 		_player.getWeapon().updateBullet();
-		// usleep(10000); // 10 ms
 		_frameWait();
 
         refresh();
@@ -178,4 +161,34 @@ void Window::_frameWait(void)
 	};
 	_ticks = std::clock();
 	_time++;
+}
+
+bool	Window::userInput()
+{
+	int in_char = wgetch(_window);
+
+	switch(in_char)
+	{
+		case 27       :  return false;
+		case KEY_UP   : _player.decrY(); break;
+		case KEY_DOWN : _player.incrY(); break;
+		case KEY_LEFT : _player.decrX(); break;
+		case KEY_RIGHT: _player.incrX(); break;
+		case ' '	  : _player.getWeapon().shut(_player.getX() + 1, _player.getY()); break;
+		default: break;
+	}
+
+	return true;
+}
+
+void	Window::printStat()
+{
+	mvprintw(0, (COLS / 4),
+		   	"Current HP: %d | #%d of dead | Time: %d ",
+			_player.getCHP(), _numDeadth, _time / FPS );
+}
+
+void	Window::drawBullet()
+{
+
 }

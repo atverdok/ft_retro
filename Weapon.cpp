@@ -6,7 +6,7 @@
 /*   By: atverdok <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/05 11:04:23 by atverdok          #+#    #+#             */
-/*   Updated: 2017/11/05 12:13:12 by atverdok         ###   ########.fr       */
+/*   Updated: 2017/11/05 16:58:49 by oshudria         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,9 @@
 #include "Weapon.hpp"
 #include <ncurses.h>
 
-Weapon::Weapon(int direction) : _direction(direction), _indexBull(0) { }
+Weapon::Weapon(int direction) : _indexBull(0), _direction(direction)
+{
+}	
 
 Weapon::Weapon( void ) : _indexBull(0), _direction(0) {}
 
