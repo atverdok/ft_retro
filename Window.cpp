@@ -6,7 +6,7 @@
 /*   By: oshudria <oshudria@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/04 11:30:14 by oshudria          #+#    #+#             */
-/*   Updated: 2017/11/04 21:48:08 by oshudria         ###   ########.fr       */
+/*   Updated: 2017/11/05 12:18:17 by atverdok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,10 +75,21 @@ void Window::gameProcess()
             case KEY_DOWN : _player.incrY(); break;
             case KEY_LEFT : _player.decrX(); break;
             case KEY_RIGHT: _player.incrX(); break;
+            case ' '	  : _player.getWeapon().shut(_player.getX(), _player.getY()); break;
             default: break;
         }
 	
         mvaddch(_player.getY(), _player.getX(), _player.getView());
+
+		for (int i = 0; i < _maxBull; i++)
+		{
+			if (_player.getWeapon().getBull(i).isActiv())
+			{
+				mvaddch(_player.getWeapon().getBull(i).getY(),
+						_player.getWeapon().getBull(i).getX(),
+						_player.getWeapon().getBull(i).getView());
+			}
+		}
 		for (int i = 0; i < numEnemies; ++i)
 		{
         	mvaddch(_enemies[i]->getY(),
@@ -104,6 +115,7 @@ void Window::gameProcess()
 			}
 
 		}
+		_player.getWeapon().updateBullet();
         usleep(10000); // 10 ms
 
         refresh();

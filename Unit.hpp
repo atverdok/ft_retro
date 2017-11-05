@@ -41,6 +41,7 @@ class Unit
 		char	getView()	const;
 
 		void	setX(int x);
+		void	setPosition(int x, int y);
 
 		void	incrX();
 		void	decrX();

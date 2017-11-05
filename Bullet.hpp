@@ -1,36 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Player.hpp                                         :+:      :+:    :+:   */
+/*   Bullet.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: atverdok <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/04 13:18:59 by atverdok          #+#    #+#             */
-/*   Updated: 2017/11/05 11:58:14 by atverdok         ###   ########.fr       */
+/*   Created: 2017/11/05 11:36:24 by atverdok          #+#    #+#             */
+/*   Updated: 2017/11/05 11:51:24 by atverdok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PLAYER_HPP
-# define PLAYER_HPP
+#ifndef	BULLET_HPP
+# define BULLET_HPP
 
-#include "Unit.hpp"
-#include "Weapon.hpp"
+# include "Unit.hpp"
 
-class Player : public Unit
-{
+class	Bullet : public Unit {
 
-	private:
-		Weapon	_weapon;
+private:
+	bool _isActiv;
 
-	public:
-		Player();
-		Player(int verticalPos);
-		Player(Player const & src);
-		~Player();
+public:
+	
+	Bullet( void );
+	Bullet(int x, int y, char c);
+	~Bullet( void );
 
-		Player & operator=(Player const & hrs);
+	bool	isActiv( void );
+	void	setActiv(bool);
 
-		Weapon & getWeapon();
 };
 
 #endif

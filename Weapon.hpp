@@ -1,36 +1,43 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Player.hpp                                         :+:      :+:    :+:   */
+/*   Weapon.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: atverdok <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/04 13:18:59 by atverdok          #+#    #+#             */
-/*   Updated: 2017/11/05 11:58:14 by atverdok         ###   ########.fr       */
+/*   Created: 2017/11/05 10:41:01 by atverdok          #+#    #+#             */
+/*   Updated: 2017/11/05 11:39:46 by atverdok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PLAYER_HPP
-# define PLAYER_HPP
+#ifndef WEAPON_HPP
+# define WEAPON_HPP
 
-#include "Unit.hpp"
-#include "Weapon.hpp"
+# include "Bullet.hpp"
 
-class Player : public Unit
+const int	_maxBull = 100;
+
+class Weapon
 {
 
-	private:
-		Weapon	_weapon;
+private:
+	int		_indexBull;
+	Bullet	_bullArr[_maxBull];
+	int		_direction;
 
-	public:
-		Player();
-		Player(int verticalPos);
-		Player(Player const & src);
-		~Player();
+public:
+	Weapon( void );
+	Weapon(int direction);
+	Weapon(Weapon const &);
+	~Weapon( void );
 
-		Player & operator=(Player const & hrs);
+	Weapon &	operator=(Weapon const &);
+	
+	Bullet &	getBull( int index );
 
-		Weapon & getWeapon();
+	void		shut( int x, int y);
+	void		updateBullet( void );
 };
+
 
 #endif

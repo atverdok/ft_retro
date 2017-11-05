@@ -6,19 +6,19 @@
 /*   By: atverdok <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/04 13:23:24 by atverdok          #+#    #+#             */
-/*   Updated: 2017/11/04 19:29:42 by oshudria         ###   ########.fr       */
+/*   Updated: 2017/11/05 12:01:00 by atverdok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Player.hpp"
 
-Player::Player() : Unit(0, 0, '>')
+Player::Player() : Unit(0, 0, '>'), _weapon(1)
 {
 	_currentHP = 3;
 	_maximumHP = 3;
 }
 
-Player::Player(int verticalPos) : Unit(1, verticalPos, '>')
+Player::Player(int verticalPos) : Unit(1, verticalPos, '>'), _weapon(1)
 {
 	_currentHP = 3;
 	_maximumHP = 3;
@@ -44,3 +44,10 @@ Player & Player::operator=(Player const & rhs)
 	}
 	return *this;
 }
+
+Weapon & Player::getWeapon( void )
+{
+	return _weapon;
+}
+
+

@@ -75,6 +75,12 @@ void	Unit::setX(int x)
 	_posX = x;
 }
 
+void	Unit::setPosition(int x, int y)
+{
+	_posX = x;
+	_posY = y;
+}
+
 void	Unit::incrX()
 {
 	++_posX;
