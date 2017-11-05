@@ -16,7 +16,7 @@
 #include <cstdlib>
 #include <ctime>
 
-Window::Window()  
+Window::Window() : _numDeadth(0), _time(0)
 {
 	_window = initscr();
 	cbreak();
@@ -25,8 +25,10 @@ Window::Window()
 	nodelay(_window, true);
 	curs_set(0);
 	start_color();
+	attron(A_BOLD);
 	init_pair(1, COLOR_BLACK, COLOR_YELLOW);
 	wbkgd(_window, COLOR_PAIR(1));
+	_ticks = std::clock();
 
 	_player = Player(getmaxy(_window) / 2);
 	std::srand(std::time(0));
@@ -38,6 +40,7 @@ Window::~Window()
 {
 	for (int i = 0; i < numEnemies; ++i)
 		delete _enemies[i];
+   	attroff(A_BOLD);
 	endwin();
 }
 
@@ -63,11 +66,9 @@ void Window::gameProcess()
 
         mvaddch(_player.getY(), _player.getX(), ' ');
 
-        attron(A_BOLD);
     	box(_window, 0, 0);
-    	attroff(A_BOLD);
 
-        mvprintw(0, (COLS / 2), " X=%d Y=%d ", _player.getX(), _player.getY() );
+        mvprintw(0, (COLS / 2), "Current HP: %d | #%d of dead | Time: %d ", _player.getCHP(), _numDeadth, _time / 60 );
         
         switch(in_char) {
         	case 27       :  exit_requested = true; break;
@@ -75,7 +76,7 @@ void Window::gameProcess()
             case KEY_DOWN : _player.incrY(); break;
             case KEY_LEFT : _player.decrX(); break;
             case KEY_RIGHT: _player.incrX(); break;
-            case ' '	  : _player.getWeapon().shut(_player.getX(), _player.getY()); break;
+            case ' '	  : _player.getWeapon().shut(_player.getX() + 1, _player.getY()); break;
             default: break;
         }
 	
@@ -88,15 +89,39 @@ void Window::gameProcess()
 				mvaddch(_player.getWeapon().getBull(i).getY(),
 						_player.getWeapon().getBull(i).getX(),
 						_player.getWeapon().getBull(i).getView());
+				
+				mvaddch(_player.getWeapon().getBull(i).getY(),
+						_player.getWeapon().getBull(i).getX() - 1 * _player.getWeapon().getDirection(),
+						' ');		
 			}
 		}
+
 		for (int i = 0; i < numEnemies; ++i)
 		{
+
+			for (int j = 0; j < _maxBull; ++j)
+			{
+				if (_player.getWeapon().getBull(j).isActiv())
+				{
+					if (_player.getWeapon().getBull(j).getY() == _enemies[i]->getY() &&
+					_player.getWeapon().getBull(j).getX() == _enemies[i]->getX())
+					{
+						mvaddch(_player.getWeapon().getBull(j).getY(),
+						_player.getWeapon().getBull(j).getX(),
+						' ');
+						_player.getWeapon().getBull(j).setActiv(false);
+						_player.getWeapon().minusBull();
+						++_numDeadth;
+						_enemies[i]->setX(getmaxx(_window) + 10 + (rand() % 40));
+						
+					}
+				}
+			}
+
+
         	mvaddch(_enemies[i]->getY(),
 				   	_enemies[i]->getX(),
-				   	_enemies[i]->getView());
-		
-		
+				   	_enemies[i]->getView());		
 
 			if ((count % ((rand() % 9) + 7)) == 0)
 			{
@@ -105,18 +130,22 @@ void Window::gameProcess()
 			}
 
 			if (_enemies[i]->getX() < 1)
-				_enemies[i]->setX(getmaxx(_window) + 10);
+				_enemies[i]->setX(getmaxx(_window) + 10 + (rand() % 40));
 			if (_player.getX() == _enemies[i]->getX() &&
 				_player.getY() == _enemies[i]->getY())
 			{
+				_player.setCHP(_player.getCHP() - 1);
+				if (_player.getCHP() == 0)
+					exit(1);
 				_enemies[i]->setX(getmaxx(_window) + 10 + (rand() % 40));
-				mvaddch(_enemies[i]->getY(), _enemies[i]->getX(), '+');
 
 			}
 
 		}
+
 		_player.getWeapon().updateBullet();
-        usleep(10000); // 10 ms
+		// usleep(10000); // 10 ms
+		_frameWait();
 
         refresh();
 		++count;
@@ -133,4 +162,20 @@ void	Window::createEnemies()
 		y = tmp;
 		_enemies[i] = new Enemy(getmaxx(_window) + 10 + (rand() % 40), y);
 	}
+}
+
+
+void Window::_frameWait(void)
+{
+	time_t now;
+
+	while (1) {
+		now = std::clock();
+		double t = ((double)(now - _ticks) / CLOCKS_PER_SEC) * 1000;
+		if (t >= FPS_DFLT_MSEC)
+			break;
+		usleep(1);
+	};
+	_ticks = std::clock();
+	_time++;
 }

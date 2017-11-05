@@ -37,6 +37,8 @@ public:
 
 	void		shut( int x, int y);
 	void		updateBullet( void );
+	int			getDirection( void );
+	void		minusBull( void );
 };
 
 

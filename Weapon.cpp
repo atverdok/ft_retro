@@ -23,9 +23,16 @@ void	Weapon::shut(int x, int y)
 {
 	if (_indexBull < _maxBull)
 	{
-		_bullArr[_indexBull].setActiv(true);
-		_bullArr[_indexBull].setPosition(x + 1 * _direction, y);
 		++_indexBull;
+		for (int i = 0; i < _maxBull; ++i)
+		{
+			if (!_bullArr[i].isActiv())
+			{
+				_bullArr[i].setActiv(true);
+				_bullArr[i].setPosition(x + 1 * _direction, y);
+				break;
+			}
+		}
 	}
 }
 
@@ -37,7 +44,10 @@ void	Weapon::updateBullet( void )
 		{
 			_bullArr[i].setX(_bullArr[i].getX() + _direction);
 			if (_bullArr[i].getX() < 1 || _bullArr[i].getX()  > (COLS - 1 ))
+			{
 				_bullArr[i].setActiv(false);
+				--_indexBull;
+			}
 		}
 	}
 }
@@ -49,7 +59,15 @@ Bullet	& Weapon::getBull( int index )
 	return _bullArr[index];
 }
 
+int		Weapon::getDirection( void )
+{
+	return _direction;
+}
 
+void	Weapon::minusBull( void )
+{
+	--_indexBull;
+}
 
 
 

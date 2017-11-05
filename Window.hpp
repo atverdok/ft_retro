@@ -14,8 +14,13 @@
 # define WINDOW_HPP
 
 #include <ncurses.h>
+#include <ctime>
 #include "Player.hpp"
 #include "Enemy.hpp"
+
+#define FPS 60
+#define FPS_DFLT_SEC (1. / FPS)
+#define FPS_DFLT_MSEC (FPS_DFLT_SEC * 1000)
 
 const int	numEnemies = 60;
 
@@ -25,6 +30,9 @@ class Window
 		WINDOW	*_window;
 		Player	_player;
 		Enemy	*_enemies[numEnemies];
+		int		_numDeadth;
+		time_t	_ticks;
+		int		_time;
 
 	private:
 		Window(Window const & src);
@@ -37,6 +45,7 @@ class Window
 		~Window();
 
 		void	gameProcess();
+		void	_frameWait(void);
 };
 
 #endif // WINDOW_HPP

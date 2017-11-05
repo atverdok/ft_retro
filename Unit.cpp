@@ -75,6 +75,12 @@ void	Unit::setX(int x)
 	_posX = x;
 }
 
+void	Unit::setCHP(int chp)
+{
+	if (chp >= 0 && chp <= _maximumHP)
+		_currentHP = chp;
+}
+
 void	Unit::setPosition(int x, int y)
 {
 	_posX = x;
