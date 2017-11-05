@@ -6,7 +6,7 @@
 /*   By: oshudria <oshudria@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/04 11:30:14 by oshudria          #+#    #+#             */
-/*   Updated: 2017/11/05 17:31:36 by oshudria         ###   ########.fr       */
+/*   Updated: 2017/11/05 20:29:15 by oshudria         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,84 +55,51 @@ Window & Window::operator=(Window const & rhs)
 	return *this;
 }
 
-void Window::gameProcess()
+void	Window::gameProcess()
 {
 	int count = 0;
 	while(userInput()) // chek key codes
 	{
-        mvaddch(_player.getY(), _player.getX(), ' ');
     	box(_window, 0, 0);
-		printStat();   // statistics on top of Window
-        mvaddch(_player.getY(), _player.getX(), _player.getView()); // draw player
-
-
-		for (int i = 0; i < _maxBull; i++)
+		if (_player.isLive())
 		{
-			if (_player.getWeapon().getBull(i).isActiv())
-			{
-				mvaddch(_player.getWeapon().getBull(i).getY(),
-						_player.getWeapon().getBull(i).getX(),
-						_player.getWeapon().getBull(i).getView());
-				
-				mvaddch(_player.getWeapon().getBull(i).getY(),
-						_player.getWeapon().getBull(i).getX() - 1 * _player.getWeapon().getDirection(),
-						' ');		
-			}
-		}
+			printStat();   // statistics on top of Window
+			mvaddch(_player.getY(), _player.getX(), _player.getView()); // draw player
 
-		for (int i = 0; i < numEnemies; ++i)
-		{
+			drawBullet();
 
-			for (int j = 0; j < _maxBull; ++j)
+			for (int i = 0; i < numEnemies; ++i)
 			{
-				if (_player.getWeapon().getBull(j).isActiv())
+				killEnemy(i);
+				moveEnemy(i, count);
+
+				if (_player.getX() == _enemies[i]->getX() &&
+					_player.getY() == _enemies[i]->getY())
 				{
-					if (_player.getWeapon().getBull(j).getY() == _enemies[i]->getY() &&
-					_player.getWeapon().getBull(j).getX() == _enemies[i]->getX())
-					{
-						mvaddch(_player.getWeapon().getBull(j).getY(),
-						_player.getWeapon().getBull(j).getX(),
-						' ');
-						_player.getWeapon().getBull(j).setActiv(false);
-						_player.getWeapon().minusBull();
-						++_numDeadth;
-						_enemies[i]->setX(getmaxx(_window) + 10 + (rand() % 40));
-						
-					}
+					_player.setCHP(_player.getCHP() - 1);
+					_enemies[i]->setX(getmaxx(_window) + 10 + (rand() % 40));
+					if (_player.getCHP() == 0)
+						break;
 				}
-			}
-
-
-        	mvaddch(_enemies[i]->getY(),
-				   	_enemies[i]->getX(),
-				   	_enemies[i]->getView());		
-
-			if ((count % ((rand() % 9) + 7)) == 0)
-			{
-				mvaddch(_enemies[i]->getY(), _enemies[i]->getX(), ' ');
-				_enemies[i]->decrX();
-			}
-
-			if (_enemies[i]->getX() < 1)
-				_enemies[i]->setX(getmaxx(_window) + 10 + (rand() % 40));
-			if (_player.getX() == _enemies[i]->getX() &&
-				_player.getY() == _enemies[i]->getY())
-			{
-				_player.setCHP(_player.getCHP() - 1);
-				if (_player.getCHP() == 0)
-					exit(1);
-				_enemies[i]->setX(getmaxx(_window) + 10 + (rand() % 40));
 
 			}
-
+			_player.getWeapon().updateBullet();
+			_frameWait();
+			refresh();
+			++count;
 		}
-
-		_player.getWeapon().updateBullet();
-		_frameWait();
-
-        refresh();
-		++count;
+		else
+		{
+			clear();
+    		box(_window, 0, 0);
+			break;
+		}
     }
+	while(userInput())
+   	{
+		printStat();
+		mvprintw((COLS / 3), (LINES / 2), "GAME OVER!!!");
+	}
 }
 
 void	Window::createEnemies()
@@ -166,6 +133,8 @@ void Window::_frameWait(void)
 bool	Window::userInput()
 {
 	int in_char = wgetch(_window);
+	
+	mvaddch(_player.getY(), _player.getX(), ' ');
 
 	switch(in_char)
 	{
@@ -177,6 +146,15 @@ bool	Window::userInput()
 		case ' '	  : _player.getWeapon().shut(_player.getX() + 1, _player.getY()); break;
 		default: break;
 	}
+
+	if (_player.getX() < 1)
+		_player.setX(1);
+	if (_player.getY() < 1)
+		_player.setY(1);
+	if (_player.getX() > (COLS - 2))
+		_player.setX((COLS - 2));
+	if (_player.getY() > (LINES - 2))
+		_player.setY((LINES - 2));
 
 	return true;
 }
@@ -190,5 +168,52 @@ void	Window::printStat()
 
 void	Window::drawBullet()
 {
+	for (int i = 0; i < _maxBull; i++)
+	{
+		if (_player.getWeapon().getBull(i).isActiv())
+		{
+			mvaddch(_player.getWeapon().getBull(i).getY(),
+					_player.getWeapon().getBull(i).getX(),
+					_player.getWeapon().getBull(i).getView());
+			mvaddch(_player.getWeapon().getBull(i).getY(),
+					_player.getWeapon().getBull(i).getX() - 1 * _player.getWeapon().getDirection(),
+					' ');
+		}
+	}
+}
 
+void	Window::killEnemy(int index)
+{
+	for (int j = 0; j < _maxBull; ++j)
+	{
+		if (_player.getWeapon().getBull(j).isActiv())
+		{
+			if (_player.getWeapon().getBull(j).getY() == _enemies[index]->getY()
+				&& _player.getWeapon().getBull(j).getX() == _enemies[index]->getX())
+			{
+				mvaddch(_player.getWeapon().getBull(j).getY(),
+						_player.getWeapon().getBull(j).getX(),
+						' ');
+				_player.getWeapon().getBull(j).setActiv(false);
+				_player.getWeapon().minusBull();
+				++_numDeadth;
+				_enemies[index]->setX(getmaxx(_window) + 10 + (rand() % 40));
+			}
+		}
+	}
+}
+
+void	Window::moveEnemy(int index, int count)
+{
+	if ((count % ((rand() % 9) + 7)) == 0)
+	{
+		mvaddch(_enemies[index]->getY(), _enemies[index]->getX(), ' ');
+		_enemies[index]->decrX();
+	}
+	if (_enemies[index]->getX() < 1)
+		_enemies[index]->setX(getmaxx(_window) + 10 + (rand() % 40));
+
+	mvaddch(_enemies[index]->getY(),
+		   	_enemies[index]->getX(),
+		   	_enemies[index]->getView());		
 }

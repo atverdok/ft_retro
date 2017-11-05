@@ -6,7 +6,7 @@
 /*   By: oshudria <oshudria@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/04 18:05:28 by oshudria          #+#    #+#             */
-/*   Updated: 2017/11/04 21:10:04 by oshudria         ###   ########.fr       */
+/*   Updated: 2017/11/05 19:10:00 by oshudria         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ class Unit
 		char	getView()	const;
 
 		void	setX(int x);
+		void	setY(int y);
 		void	setCHP(int chp);
 		void	setPosition(int x, int y);
 
@@ -49,6 +50,7 @@ class Unit
 		void	incrY();
 	   	void	decrY();
 		void	incrLvl();
+		bool	isLive();
 };
 
 #endif // UNIT_HPP

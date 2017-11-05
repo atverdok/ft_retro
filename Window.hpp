@@ -6,7 +6,7 @@
 /*   By: oshudria <oshudria@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/04 11:24:54 by oshudria          #+#    #+#             */
-/*   Updated: 2017/11/05 17:31:38 by oshudria         ###   ########.fr       */
+/*   Updated: 2017/11/05 20:14:43 by oshudria         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ class Window
 		bool	userInput();
 		void	printStat();
 		void	drawBullet();
+		void	killEnemy(int index);
+		void	moveEnemy(int index, int count);
 
 	public:
 		Window();

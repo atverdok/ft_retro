@@ -6,7 +6,7 @@
 /*   By: oshudria <oshudria@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/04 18:10:12 by oshudria          #+#    #+#             */
-/*   Updated: 2017/11/04 21:09:39 by oshudria         ###   ########.fr       */
+/*   Updated: 2017/11/05 19:10:33 by oshudria         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,11 @@ void	Unit::setX(int x)
 	_posX = x;
 }
 
+void	Unit::setY(int y)
+{
+	_posY = y;
+}
+
 void	Unit::setCHP(int chp)
 {
 	if (chp >= 0 && chp <= _maximumHP)
@@ -110,4 +115,9 @@ void	Unit::decrY()
 void	Unit::incrLvl()
 {
 	++_level;
+}
+
+bool	Unit::isLive()
+{
+	return _currentHP > 0;
 }
